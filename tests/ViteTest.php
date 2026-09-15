@@ -516,4 +516,34 @@ HTML;
 
         vite(new Vite());
     }
+
+    public function testIndexPhpRendersWithProductionManifest(): void
+    {
+        $manifestPath = $this->tempDir . '/dist/.vite/manifest.json';
+        file_put_contents($manifestPath, json_encode([
+            'src/main.js' => [
+                'file' => 'assets/main-TEST123.js',
+                'css' => ['assets/main-TEST123.css'],
+                'isEntry' => true,
+            ],
+        ], JSON_THROW_ON_ERROR));
+
+        vite(new Vite(
+            rootPath: $this->tempDir,
+            manifestPath: $manifestPath,
+            hotFile: $this->tempDir . '/storage/vite.hot'
+        ));
+
+        ob_start();
+        include __DIR__ . '/../index.php';
+        $output = ob_get_clean();
+
+        $this->assertIsString($output);
+        $this->assertStringContainsString('<!doctype html>', $output);
+        $this->assertStringContainsString('<div id="app"></div>', $output);
+        $this->assertStringContainsString('/dist/assets/main-TEST123.css', $output);
+        $this->assertStringContainsString('/dist/assets/main-TEST123.js', $output);
+
+        vite(new Vite());
+    }
 }

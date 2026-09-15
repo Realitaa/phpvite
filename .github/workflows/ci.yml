@@ -1,0 +1,79 @@
+name: CI & Web Testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ["8.2", "8.3", "8.4", "8.5"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: mbstring, json
+          coverage: none
+
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v2
+        with:
+          version: 11.24.0
+          runtime: node@24
+          cache: true
+        env:
+          pnpm_config_minimum_release_age: 0
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install PHP dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Install Node dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run PHPUnit Tests
+        run: composer test
+
+      - name: Build Vite assets
+        run: pnpm build
+
+      - name: Verify build artifacts exist
+        run: |
+          test -f dist/.vite/manifest.json || { echo "Manifest not found!"; exit 1; }
+
+      - name: End-to-end smoke test (PHP built-in server)
+        run: |
+          php -S 127.0.0.1:8000 index.php > /dev/null 2>&1 &
+          SERVER_PID=$!
+          sleep 2
+
+          # Curl the homepage and verify HTTP 200 and rendered Vite tags
+          RESPONSE=$(curl -s -i http://127.0.0.1:8000)
+          kill $SERVER_PID
+
+          echo "$RESPONSE" | grep "200 OK" || { echo "HTTP request failed!"; echo "$RESPONSE"; exit 1; }
+          echo "$RESPONSE" | grep -F "/dist/assets/main" || { echo "Vite production assets missing from HTML!"; echo "$RESPONSE"; exit 1; }
+          echo "Smoke test passed successfully!"
