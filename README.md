@@ -85,6 +85,8 @@ phpvite/
    composer install
    ```
 
+   > **Tip (Package Manager):** This repository uses **pnpm** by default. However, if you prefer **npm**, **yarn**, or **bun**, simply delete the `pnpm-lock.yaml` file and install using your preferred package manager (e.g., `npm install` or `bun install`). The `composer dev` command will detect and use it automatically.
+
 3. Setup environment file:
    ```bash
    cp .env.example .env

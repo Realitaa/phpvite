@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f23b0179379347ccb49f8a6b5253af4",
+    "content-hash": "7c8cb97a9f0881e6e77f8726eb4ce34b",
     "packages": [
         {
             "name": "graham-campbell/result-type",
@@ -2145,27 +2145,27 @@
         },
         {
             "name": "spatie/fork",
-            "version": "1.2.7",
+            "version": "1.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/fork.git",
-                "reference": "83a51210fd366af3972aad119e7ab5e35ac57850"
+                "reference": "749d995d027be319b325f1901cc33a646ef19f75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/fork/zipball/83a51210fd366af3972aad119e7ab5e35ac57850",
-                "reference": "83a51210fd366af3972aad119e7ab5e35ac57850",
+                "url": "https://api.github.com/repos/spatie/fork/zipball/749d995d027be319b325f1901cc33a646ef19f75",
+                "reference": "749d995d027be319b325f1901cc33a646ef19f75",
                 "shasum": ""
             },
             "require": {
                 "ext-pcntl": "*",
                 "ext-sockets": "*",
-                "php": "^8.3"
+                "php": "^8.0"
             },
             "require-dev": {
-                "laravel/pint": "^1.0",
-                "nesbot/carbon": "^2.66|^3.0",
-                "pestphp/pest": "^4.0",
+                "nesbot/carbon": "^2.66",
+                "pestphp/pest": "^1.23",
+                "phpunit/phpunit": "^9.5",
                 "spatie/ray": "^1.10"
             },
             "type": "library",
@@ -2198,7 +2198,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/fork/issues",
-                "source": "https://github.com/spatie/fork/tree/1.2.7"
+                "source": "https://github.com/spatie/fork/tree/1.2.6"
             },
             "funding": [
                 {
@@ -2206,7 +2206,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-03-27T19:08:46+00:00"
+            "time": "2026-03-27T18:49:28+00:00"
         },
         {
             "name": "staabm/side-effects-detector",
@@ -2316,7 +2316,9 @@
     "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {},
+    "platform": {
+        "php": "^8.2"
+    },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
 }
