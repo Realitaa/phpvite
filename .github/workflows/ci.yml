@@ -28,7 +28,7 @@ jobs:
           coverage: none
 
       - name: Setup pnpm and Node.js
-        uses: pnpm/setup@v2
+        uses: pnpm/setup@v3
         with:
           version: 11.24.0
           runtime: node@24
