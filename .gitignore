@@ -27,3 +27,6 @@ storage/vite.hot
 *.njsproj
 *.sln
 *.sw?
+
+phpunit.xml.bak
+*.bak
